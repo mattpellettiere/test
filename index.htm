@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stipend Calculator</title>
+</head>
+<body>
+    <h1>Stipend Calculator</h1>
+    <form id="calculator">
+        <label for="coaching_juniors">Coaching Juniors (yes/no):</label>
+        <input type="text" id="coaching_juniors" required><br>
+
+        <label for="hours_outside_juniors">Hours Outside Juniors:</label>
+        <input type="number" id="hours_outside_juniors" required><br>
+
+        <label for="off_season_hours">Off-Season Hours:</label>
+        <input type="number" id="off_season_hours" required><br>
+
+        <label for="desired_income">Desired Income:</label>
+        <input type="number" step="0.01" id="desired_income" required><br>
+
+        <label for="lesson_rate">Lesson Rate:</label>
+        <input type="number" step="0.01" id="lesson_rate" required><br>
+
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+
+    <h2 id="result"></h2>
+
+    <script>
+        function calculate() {
+            const coachingJuniors = document.getElementById('coaching_juniors').value;
+            const hoursOutsideJuniors = parseFloat(document.getElementById('hours_outside_juniors').value);
+            const offSeasonHours = parseFloat(document.getElementById('off_season_hours').value);
+            const desiredIncome = parseFloat(document.getElementById('desired_income').value);
+            const lessonRate = parseFloat(document.getElementById('lesson_rate').value);
+
+            const juniorIncomePerHour = 40;
+            const outsideIncomePerHour = 23;
+            const offSeasonIncomePerHour = 23;
+            const juniorHours = 600;
+            const juniorSeasonWeeks = 40;
+            const offSeasonWeeks = 11;
+
+            let juniorIncome = coachingJuniors === 'yes' ? juniorIncomePerHour * juniorHours : 0;
+            let outsideIncome = outsideIncomePerHour * hoursOutsideJuniors * juniorSeasonWeeks;
+            let offSeasonIncome = offSeasonIncomePerHour * offSeasonHours * offSeasonWeeks;
+            let totalBaseStipend = juniorIncome + outsideIncome + offSeasonIncome;
+
+            let lessonIncome = lessonRate / 2;
+            let remainingIncome = desiredIncome - totalBaseStipend;
+            let lessonsNeeded = remainingIncome > 0 ? remainingIncome / lessonIncome : 0;
+
+            document.getElementById('result').innerHTML = `Total Base Stipend: $${totalBaseStipend.toFixed(2)}, Lessons Needed: ${lessonsNeeded.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
